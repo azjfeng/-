@@ -1,0 +1,376 @@
+<style lang="less" scoped>
+body,
+html,
+page {
+  height: 100%;
+  overflow: hidden;
+}
+.header {
+  width: 100%;
+  height: 80rpx;
+  border: 1px solid rgb(245, 241, 241);
+  box-shadow: 0 3px 3px -1px rgb(246, 243, 243);
+  text-align: center;
+  .title {
+    line-height: 80rpx;
+  }
+}
+.container {
+  width: 100%;
+  height: calc(100% - 85rpx);
+  display: flex;
+  flex-direction: inherit;
+  margin-top: 6rpx;
+  .box_left {
+    width: 220rpx;
+    height: 100%;
+    background: rgb(248, 245, 245);
+  }
+  .box_right {
+    flex-grow: 1;
+    height: 100%;
+    .input_search {
+      position: relative;
+      width: 100%;
+      height: 100rpx;
+      border-bottom: 1px dotted rgb(235, 230, 230);
+      #search {
+        position: absolute;
+        width: 80%;
+        height: 50rpx;
+        border: 1px solid rgb(235, 227, 227);
+        border-radius: 25rpx;
+        background: rgb(235, 227, 227);
+        margin-left: 10%;
+        margin-top: 25rpx;
+        text-align: center;
+      }
+    }
+    .content_scroll {
+      height: calc(100% - 100rpx);
+    }
+    .zhuanqu{
+      width: 94%;
+      height: 30rpx;
+      line-height: 30rpx;
+      font-size: 30rpx;
+      margin-left: 3%;
+      border-left:8rpx solid red; 
+      margin-top: 20rpx;
+      margin-bottom: 20rpx
+    }
+  }
+}
+
+ul > li {
+  list-style: none;
+}
+.item_list {
+  width: 100%;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  color: rgb(136, 133, 133);
+}
+.active {
+  background: white;
+  color: red;
+}
+
+.img_box {
+  width: 94%;
+  height: 150rpx;
+  // border: 1px solid red;
+  margin-left: 3%;
+  margin-top: 10rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  .imgbox {
+    width: 150rpx;
+    height: 150rpx;
+    border-radius: 10rpx;
+    .img {
+      width: 150rpx;
+      height: 150rpx;
+      border-radius: 10rpx;
+    }
+  }
+  .imgbox_content {
+    width: calc(100% - 150rpx);
+    height: 100%;
+    position: relative;
+  }
+}
+.imgbox_content_item1 {
+  width: 94%;
+  margin-left: 4%;
+  margin-top: 10rpx;
+  .text {
+    width: 100%;
+    font-size: 25rpx;
+    font-weight: 600;
+  }
+}
+.imgbox_content_item2 {
+  width: 94%;
+  margin-left: 4%;
+  font-size: 20rpx;
+  color: rgb(218, 210, 210);
+}
+.imgbox_content_item3 {
+  width: 94%;
+  margin-left: 4%;
+  font-size: 25rpx;
+  position: absolute;
+  bottom: 10rpx;
+  display: flex;
+  justify-content: space-between;
+  .btn_select {
+    width: 100rpx;
+    height: 40rpx;
+    border-radius: 20rpx;
+    background: orange;
+    color: white;
+    text-align: center;
+    line-height: 40rpx;
+  }
+  .btn_price {
+    line-height: 40rpx;
+    color: red;
+    font-weight: 600;
+  }
+}
+.scroll_box:last-child{
+  padding-bottom: 200rpx;
+}
+</style>
+<wxs module="m1" lang="babel">
+const getTime = (time) => {
+  let date = getDate(time);
+  let hour = date.getHours();
+  let mins = date.getMinutes();
+  let sec = date.getSeconds();
+  let milli = date.getMilliseconds();
+  return `${hour}:${mins}:${sec}.${milli}`;
+}
+module.exports.getTime = getTime;
+</wxs>
+<template>
+  <view class="header">
+    <text class="title">xxxxxxxx</text>
+  </view>
+  <view class="container">
+    <view class="box_left">
+      <view style="width:100%;height:1000rpx">
+        <ul>
+          <li class="item_list" :class="{'active':isChange == 1}" bindtap="changeList(1)">导航1</li>
+          <li class="item_list" :class="{'active':isChange == 2 }" bindtap="changeList(2)">导航2</li>
+          <li class="item_list" :class="{'active':isChange == 3 }" bindtap="changeList(3)">导航3</li>
+          <li class="item_list" :class="{'active':isChange == 4 }" bindtap="changeList(4)">导航4</li>
+          <li class="item_list" :class="{'active':isChange == 5 }" bindtap="changeList(5)">导航5</li>
+        </ul>
+      </view>
+    </view>
+    <view class="box_right">
+      <view class="input_search">
+        <input type="text" name="" id="search" placeholder="搜索">
+      </view>
+      <view class="zhuanqu" v-if="isChange == 1 ">{{isChange == 1 ?'导航1':""}}</view>
+      <view class="zhuanqu"  v-if="isChange == 2 ">{{isChange == 2 ?'导航2':""}}</view>
+      <view class="zhuanqu" v-if="isChange == 3 ">{{isChange == 3 ?'导航3':""}}</view>
+       <view class="zhuanqu" v-if="isChange == 4 ">{{isChange == 4 ?'导航4':""}}</view>
+      <scroll-view style="width:100%" scroll-y="true" bindscroll="scroll" class="content_scroll" :scroll-top="scrollTop">
+        <view style="width:100%">
+
+          <view class="scroll_box">
+            <view class="img_box" v-for="(item, index) in items" :key="index">
+              <view class="imgbox">
+                <image :src="item.imgUrl" class="img"/>
+              </view>
+              <view class="imgbox_content">
+                <view class="imgbox_content_item1">
+                  <view class="text">新品特价-红油笋尖饭-全素</view>
+                </view>
+                <view class="imgbox_content_item2">
+                  <view>月销量:16</view>
+                </view>
+                <view class="imgbox_content_item3">
+                  <view class="btn_price">￥14</view>
+                  <view class="btn_select">选规格</view>
+                </view>
+              </view>
+            </view>
+
+          </view>
+
+           <view class="scroll_box">
+             <view class="zhuanqu">导航2</view>
+             <view >
+              <view class="img_box" v-for="(item, index) in items" :key="index"> 
+                <view class="imgbox">
+                  <image :src="item.imgUrl" class="img"/>
+                </view>
+                <view class="imgbox_content">
+                  <view class="imgbox_content_item1">
+                    <view class="text">新品特价-红油笋尖饭-全素</view>
+                  </view>
+                  <view class="imgbox_content_item2">
+                    <view>月销量:16</view>
+                  </view>
+                  <view class="imgbox_content_item3">
+                    <view class="btn_price">￥14</view>
+                    <view class="btn_select">选规格</view>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+
+
+        <view class="scroll_box" >
+            <view class="zhuanqu">导航3</view>
+            <view >
+            <view class="img_box" v-for="(item, index) in items" :key="index"> 
+              <view class="imgbox">
+                <image :src="item.imgUrl" class="img"/>
+              </view>
+              <view class="imgbox_content">
+                <view class="imgbox_content_item1">
+                  <view class="text">新品特价-红油笋尖饭-全素</view>
+                </view>
+                <view class="imgbox_content_item2">
+                  <view>月销量:16</view>
+                </view>
+                <view class="imgbox_content_item3">
+                  <view class="btn_price">￥14</view>
+                  <view class="btn_select">选规格</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="scroll_box" >
+            <view class="zhuanqu">导航4</view>
+            <view >
+            <view class="img_box" v-for="(item, index) in items" :key="index"> 
+              <view class="imgbox">
+                <image :src="item.imgUrl" class="img"/>
+              </view>
+              <view class="imgbox_content">
+                <view class="imgbox_content_item1">
+                  <view class="text">新品特价-红油笋尖饭-全素</view>
+                </view>
+                <view class="imgbox_content_item2">
+                  <view>月销量:16</view>
+                </view>
+                <view class="imgbox_content_item3">
+                  <view class="btn_price">￥14</view>
+                  <view class="btn_select">选规格</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+
+
+        </view>
+
+
+
+      </scroll-view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from '@wepy/core';
+import eventHub from '../common/eventHub';
+import { mapState } from '@wepy/x';
+import store from '../store';
+import testMixin from '../mixins/test';
+
+wepy.page({
+  data: {
+    text: 'text',
+    currentIndex: 1,
+    scrollArr:[],
+    arr:[],
+    scrollY:0,
+    items:[
+      {id:0,imgUrl:"../img/1.jpg"},
+      {id:1,imgUrl:"../img/2.jpg"},
+      {id:2,imgUrl:"../img/3.jpg"},
+      {id:3,imgUrl:"../img/4.jpg"},
+      {id:4,imgUrl:"../img/4.jpg"},
+      {id:5,imgUrl:"../img/1.jpg"},
+    ],
+    navObj:{
+      1:"导航1",
+      2:"导航2",
+      3:"导航3",
+    },
+    scrollTop:0,
+  },
+  created() {
+  },
+  computed:{
+      isChange() {
+      for (let i = 0; i < this.scrollArr.length; i++) {
+        let height1 = this.scrollArr[i];
+        let height2 = this.scrollArr[i + 1];
+        if (!height2 || (this.scrollY >= height1 && this.scrollY < height2)) {
+          return i+1;
+        }
+      }
+      return 1;
+      }
+  },
+  onReady() {
+     let self = this;
+      if(self.arr.length == 0){
+            //创建节点选择器
+        var query = wx.createSelectorQuery();
+        query.selectAll('.scroll_box').boundingClientRect()
+        query.exec(function (res) {
+          self.arr = res[0];
+        //  console.log(self.arr)
+        });
+      }
+  },
+  methods: {
+    changeList: function(index) {
+      this.getItems();
+      this.scrollTop = this.scrollArr[index-1];
+    },
+    formateNav:function(index){
+        return this.navObj[index];
+    },
+    //获取商品列表的高度
+    getItems:function(){
+      if(this.scrollArr.length == 0){
+        let height = 0;
+        this.scrollArr.push(height);
+        this.arr.map((val,index)=>{
+            height+=val.height;
+          this.scrollArr.push(height);
+        })
+      }
+      console.log(this.scrollArr)
+    },
+    scroll:function(e){
+      this.getItems();
+      this.scrollY = e.$wx.detail.scrollTop
+      // this.scrollTop = e.$wx.detail.scrollTop
+    }
+  },
+})
+</script>
+<config>
+{
+    navigationBarTitleText: 'demo',
+    usingComponents: {
+      test:'../components/test'
+    }
+}
+</config>

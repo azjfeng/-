@@ -1,0 +1,16 @@
+<template>
+    <div class="test">
+       <span>aaaa{{title}}</span>
+    </div>
+</template>
+
+<script>
+import wepy from '@wepy/core';
+
+wepy.component({
+    props:{
+        title:""
+    }
+});
+
+</script>

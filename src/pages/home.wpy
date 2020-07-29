@@ -1,0 +1,249 @@
+<style lang="less">
+input {
+  border: 1rpx solid #ccc;
+  display: inline-block;
+  width: 200rpx;
+  border-radius: 5rpx;
+}
+.info {
+  padding-right: 10rpx;
+}
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+.slide {
+  width: 640rpx;
+  display: flex;
+  border: 1rpx solid #ccc;
+  font-size: 28rpx;
+  align-items: center;
+  box-sizing: border-box;
+  .left {
+    width: 750rpx;
+    padding: 20rpx;
+  }
+  .right {
+    display: flex;
+    .right-item {
+      padding: 20rpx 30rpx;
+      background-color: red;
+      color: #fff;
+    }
+  }
+}
+.box{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  // align-content:center;
+  justify-content: space-around;
+  align-items: center;
+  // flex-direction: inherit
+
+};
+.img_box{
+  width: 300rpx;
+  height: 150rpx;
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+  // flex-grow: 1;
+  .img{
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+
+  // margin-left: 10rpx
+}
+}
+
+</style>
+<wxs module="m1" lang="babel">
+const getTime = (time) => {
+  let date = getDate(time);
+  let hour = date.getHours();
+  let mins = date.getMinutes();
+  let sec = date.getSeconds();
+  let milli = date.getMilliseconds();
+  return `${hour}:${mins}:${sec}.${milli}`;
+}
+module.exports.getTime = getTime;
+</wxs>
+<template>
+  <div class="container">
+    <div class="box">
+        <div v-for="(item, index) in imgArr" :key="index" class="img_box">
+        <image :src="item.imgUrl" alt="" catchlongpress="saveImg(item.imgUrl)" class="img" />
+
+        </div>
+
+    </div>
+    <!-- <button open-type="getUserInfo">getUserInfo</button>
+    <text>aaaaa{{text}}</text>
+    <test :title="text"></test>
+    <img src="../img/timg.gif" catchlongpress="saveImg">
+    <button bindtap="toHome">跳转</button> -->
+    <!--toast /-->
+  </div>
+</template>
+
+<script>
+import wepy from '@wepy/core';
+import eventHub from '../common/eventHub';
+import { mapState } from '@wepy/x';
+import store from '../store';
+import testMixin from '../mixins/test';
+
+wepy.page({
+  data: {
+    text: 'text',
+    imgArr:[
+      {id:0,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:1,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:2,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:3,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:4,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:5,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:6,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:7,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:0,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:1,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:2,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:3,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:4,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:5,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:6,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:7,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:0,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:1,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:2,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:3,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:4,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:5,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:6,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+      {id:7,imgUrl:"https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif"},
+    ]
+  },
+    onShareAppMessage() {
+    return {
+      title: 'scroll-view',
+      path: 'pages/index'
+    }
+  },
+  created() {
+    wx.login({
+  success (res) {
+    console.log(res)
+  }
+})
+  },
+  methods: {
+    toHome: function() {
+      wx.navigateTo({
+        url: '/pages/home',
+        success: function(res) {
+          console.log(res);
+        },
+        fail: function(err) {
+          console.log(err);
+        }
+      });
+    },
+    saveImg: function(index) {
+      wx.getSetting({
+        success(res) {
+          if (!res.authSetting['scope.writePhotosAlbum']) {
+            wx.authorize({
+              scope: 'scope.writePhotosAlbum',
+              success() {
+                let imgSrc =
+                  'https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif';
+                wx.downloadFile({
+                  url: imgSrc, //仅为示例，并非真实的资源
+                  success(res) {
+                    let result = res;
+                    // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                    if (res.statusCode === 200) {
+                      wx.showActionSheet({
+                        itemList: ['保存图片', '保存图片', '保存图片'],
+                        success(res) {
+                          wx.saveImageToPhotosAlbum({
+                            filePath: result.tempFilePath,
+                            success() {
+                              wx.showToast({
+                                title: '保存成功',
+                                icon: 'success',
+                                duration: 2000
+                              });
+                            }
+                          });
+                        },
+                        fail(res) {
+                          console.log(res.errMsg);
+                        }
+                      });
+                    }
+                  }
+                });
+              }
+            });
+          }else{
+                let imgSrc =
+                  'https://i.gtimg.cn/channel/imglib/202007/upload_668ef9a2aad8784d20bfdbd6d0a85866.gif';
+                wx.downloadFile({
+                  url: imgSrc, //仅为示例，并非真实的资源
+                  success(res) {
+                    let result = res;
+                    // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                    if (res.statusCode === 200) {
+                      wx.showActionSheet({
+                        itemList: ['保存图片', '保存图片', '保存图片'],
+                        success(res) {
+                          wx.saveImageToPhotosAlbum({
+                            filePath: result.tempFilePath,
+                            success() {
+                              wx.showToast({
+                                title: '保存成功',
+                                icon: 'success',
+                                duration: 2000
+                              });
+                            }
+                          });
+                        },
+                        fail(res) {
+                          console.log(res.errMsg);
+                        }
+                      });
+                    }
+                  }
+                });
+          }
+        }
+      });
+    }
+  },
+  mounted() {
+
+  },
+});
+</script>
+<config>
+{
+    navigationBarTitleText: 'demo',
+    usingComponents: {
+      test:'../components/test'
+    }
+}
+</config>
